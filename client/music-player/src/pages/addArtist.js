@@ -21,6 +21,7 @@ function AddArtist(){
     bio: bio,
   }).then(() =>{
     console.log("success")
+    console.log(dob)
 
   }
   );

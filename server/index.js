@@ -23,10 +23,11 @@ app.post("/addArtist", (req,res) =>{
     const name = req.body.name;
     const dob = req.body.dob;
     const bio = req.body.bio;
+    console.log(dob)
     
     db.run(
-        "INSERT INTO Artist (id,Name,DOB,Bio) VALUES (?,?,?,?)",
-        ("",name,dob,bio),
+        "INSERT INTO Artist (Name,DOB,Bio) VALUES (?,?,?)",
+        [name,dob,bio],
         (err,result) =>{
             if(err) {
                 console.log(err)
