@@ -1,7 +1,7 @@
 import {Modal,Button,Form} from 'react-bootstrap';
 import React, {  useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Axios from "axios";
 
 // import './header.css'
 function AddArtist(){
@@ -9,6 +9,22 @@ function AddArtist(){
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [name,setName] = useState("");
+  const [dob,setDob] = useState("");
+  const [bio,setBio] = useState("");
+
+ const addArtist = () =>{
+  Axios.post("http://localhost:3001/addArtist",{
+    name: name,
+    dob: dob,
+    bio: bio,
+  }).then(() =>{
+    console.log("success")
+
+  }
+  );
+ }
 
   return (
     <>
@@ -26,6 +42,7 @@ function AddArtist(){
               <Form.Label>Artist Name</Form.Label>
               <Form.Control
                 type="text"
+                onChange = {(event) => {setName(event.target.value)}}
                 // placeholder=""
                 autoFocus
               />
@@ -34,6 +51,8 @@ function AddArtist(){
               <Form.Label>Date of birth</Form.Label>
               <Form.Control
                 type="date"
+                onChange = {(event) => {setDob(event.target.value)}}
+
                 // placeholder=""
                 autoFocus
               />
@@ -43,7 +62,10 @@ function AddArtist(){
               controlId="exampleForm.ControlTextarea1"
             >
               <Form.Label>Bio</Form.Label>
-              <Form.Control as="textarea" rows={3} />
+              <Form.Control as="textarea" rows={3}
+              onChange = {(event) => {setBio(event.target.value)}}
+              
+              />
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -51,7 +73,7 @@ function AddArtist(){
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button onClick={() => { addArtist(); handleClose();}} variant="primary">
             Save Changes
           </Button>
         </Modal.Footer>
