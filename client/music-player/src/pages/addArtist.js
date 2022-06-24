@@ -29,7 +29,7 @@ function AddArtist(){
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      <Button className='getartist' onClick={handleShow}>
         Add Artist
       </Button>
 
@@ -74,7 +74,7 @@ function AddArtist(){
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button onClick={() => { addArtist(); handleClose();}} variant="primary">
+          <Button className='getartist' onClick={() => { addArtist(); handleClose();}}>
             Save Changes
           </Button>
         </Modal.Footer>

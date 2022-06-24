@@ -50,16 +50,20 @@ function Dashboard(){
           <button className = "load" onClick = {getData}></button>
         
           <div className='addmusic'>
-          <Button onClick = {navigateMusic} >Add music</Button>
+          <h2 className='heading'>Top 10 Songs</h2>
+          <span>
+          <button onClick = {navigateMusic} >Add music</button>
+          </span>
           </div>
+          
           {data.map((val,key)=>{
 
             return <div className='card'>
             
-            <div className='column'>{val.Name}</div>
-            <div className='column'>{val.Date_of_release}</div>
-            <div className='column'>{val.Artist}</div>
-            <div className='column'>{[...Array(5)].map((star ,i) =>{
+            <div className='column'><div className='label'>Song</div>: {val.Name} </div>
+            <div className='column'><div className='label'>Date of release</div>: {val.Date_of_release}</div>
+            <div className='column'display="inline-block"><div className='label'>Artist</div>: {val.Artist}</div>
+            <div className='column'display="inline-block">{[...Array(5)].map((star ,i) =>{
               // start rater
               const ratingValue = i + 1;
               return (
@@ -83,10 +87,17 @@ function Dashboard(){
     })
     
   }
-  <button type='submit' onClick={addRating}>Submit</button>
+  
+  
+  <button className = "rating"type='submit' onClick={addRating}>Submit</button>
+
+ 
   </div>
+  <div></div>
       </div>      
     }  )}
+
+    
     </>
     )
     }

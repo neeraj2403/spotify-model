@@ -5,22 +5,51 @@ const cors = require('cors');
 app.use(cors())
 app.use(express.json())
 
+//  CONNECT TO SERVER
 app.listen(3001, () => {
     console.log("yey");
 
 }
 );
 
+// CONNECT TO DATABSE
 const sqlite3 = require("sqlite3").verbose();
-// let sql;
-
 const db = new sqlite3.Database("./spotify.db", sqlite3.OPEN_READWRITE, (err) =>{
     if(err) return console.log(err.message);
     else return console.log("connected")
 });
 
+// GET ARTIST NAME
+app.get('/getArtist',(req,res) => {
+    db.all("SELECT id,Name FROM Artist",(err,result) =>{
+        if(err){
+            console.log(err)
+        }else{
+            res.send(result)
+            console.log("sucess")
+            console.log(result)
+        }
+    }
+    )
+})
 
+// GET SONG DATA
+app.get('/getData',(req,res) => {
+    db.all("SELECT * FROM Songs ORDER BY Average_rating DESC",(err,result) =>{
+        if(err){
+            console.log(err)
+        }else{
+            res.send(result)
+            // rate = res.Average_rating
+            
+            console.log("sucess")
+            console.log(result)
+        }
+    }
+    )
+})
 
+// ADD ARTIST
 app.post("/addArtist", (req,res) =>{
     const name = req.body.name;
     const dob = req.body.dob;
@@ -42,52 +71,13 @@ app.post("/addArtist", (req,res) =>{
 
 });
 
-
-// db.getConnection(function (err,connection) {
-//     if (err) {
-//       console.log(err);
-//     }
-//   });
-
-
-
-app.get('/getArtist',(req,res) => {
-    db.all("SELECT id,Name FROM Artist",(err,result) =>{
-        if(err){
-            console.log(err)
-        }else{
-            res.send(result)
-            console.log("sucess")
-            console.log(result)
-        }
-    }
-    )
-})
-
-app.get('/getData',(req,res) => {
-    db.all("SELECT * FROM Songs ORDER BY Average_rating DESC",(err,result) =>{
-        if(err){
-            console.log(err)
-        }else{
-            res.send(result)
-            // rate = res.Average_rating
-            
-            console.log("sucess")
-            console.log(result)
-        }
-    }
-    )
-})
-
-
-
+// ADD SONG
 app.post("/addSong", (req,res) =>{
     const name = req.body.name;
     const dor = req.body.dor;
     const artist = req.body.artist;
     const rating = 0;
     const users = 0
-    // console.log(dob)
     
     db.run(
         "INSERT INTO Songs (Name,Date_of_release,Artist,Average_rating,no_users) VALUES (?,?,?,?,?)",
@@ -105,6 +95,7 @@ app.post("/addSong", (req,res) =>{
 
 });
 
+// UPDATE THE RATING
 app.put("/addRating", (req,res) =>{
     const name = req.body.name;
     const rating = req.body.rating;
@@ -112,7 +103,6 @@ app.put("/addRating", (req,res) =>{
     const avg_rating = req.body.avg_rating;
     console.log(req.body)
   
-    // console.log(dob)
     
     db.run(
         "UPDATE Songs SET Average_rating = ?,no_users = ? WHERE Name = ?",
