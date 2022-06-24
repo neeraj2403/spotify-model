@@ -64,6 +64,21 @@ app.get('/getArtist',(req,res) => {
     )
 })
 
+app.get('/getData',(req,res) => {
+    db.all("SELECT * FROM Songs ORDER BY Average_rating DESC",(err,result) =>{
+        if(err){
+            console.log(err)
+        }else{
+            res.send(result)
+            // rate = res.Average_rating
+            
+            console.log("sucess")
+            console.log(result)
+        }
+    }
+    )
+})
+
 
 
 app.post("/addSong", (req,res) =>{
@@ -81,6 +96,7 @@ app.post("/addSong", (req,res) =>{
             if(err) {
                 console.log(err)
             }else{
+                
                 res.send("values inserted")
             }
         }
@@ -88,3 +104,29 @@ app.post("/addSong", (req,res) =>{
 
 
 });
+
+app.put("/addRating", (req,res) =>{
+    const name = req.body.name;
+    const rating = req.body.rating;
+    const no_users = req.body.no_users;
+    const avg_rating = req.body.avg_rating;
+    console.log(req.body)
+  
+    // console.log(dob)
+    
+    db.run(
+        "UPDATE Songs SET Average_rating = ?,no_users = ? WHERE Name = ?",
+        [(rating + avg_rating*no_users)/(no_users+1),no_users + 1,name],
+        (err,result) =>{
+            if(err) {
+                console.log(err)
+            }else{
+                res.send("values inserted")
+                console.log("sucess")
+            }
+        }
+    );
+
+
+});
+
